@@ -180,7 +180,7 @@ BOT_TOKEN = "7699036883:AAEh1PxEVSoqaYyto0E1yByjgxC4q5mLeJw"
 CHAT_ID = "1155443179"
 
 # LIST OF PAIRS TO MONITOR (Must match MT5 Market Watch exactly)
-TARGET_SYMBOLS = ["XAUUSD","EURUSD","AUDUSD","GBPUSD"] 
+TARGET_SYMBOLS = ["XAUUSD","EURUSD"]#,"AUDUSD","GBPUSD"] 
 
 LOOP_SLEEP_SECONDS = 5        # Check every 3s to catch 1m candles
 
