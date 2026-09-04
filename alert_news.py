@@ -57,7 +57,7 @@ class RSIAgent(BaseAgent):
 
 # =============== EMA AGENT =================
 class EMAAgent(BaseAgent):
-    def __init__(self, span=200):
+    def __init__(self, span=285):
         self.span = span
 
     def run(self, df: pd.DataFrame):

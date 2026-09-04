@@ -7,7 +7,7 @@ import math
 # ==========================================
 # ⚙️ 1. SETTINGS & LOGIN
 # ==========================================
-symbols = ["XAUUSD", "EURUSD", "GBPUSD", "AUDUSD"]
+symbols = ["XAUUSD"]#, "EURUSD", "GBPUSD", "AUDUSD"]
 timeframe = mt5.TIMEFRAME_M1
 MAGIC_NUMBER = 720870344 
 account_login = 2100488483

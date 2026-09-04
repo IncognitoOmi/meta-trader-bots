@@ -133,7 +133,7 @@ def run_backtest_for_tf(timeframe, tf_name, start_date, end_date):
 # 🚀 3. EXECUTE & PRINT RESULTS
 # ==========================================
 end_date = datetime.now()
-start_date = end_date - timedelta(days=63)
+start_date = end_date - timedelta(days=66)
 
 # Run logic for all 3 Timeframes
 m1_trades = run_backtest_for_tf(mt5.TIMEFRAME_M1, "M1", start_date, end_date)
