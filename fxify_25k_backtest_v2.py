@@ -34,7 +34,7 @@ POST_PAYOUT_MAX_RISK          = 300
 POST_PAYOUT_MAX_FLOATING_LOSS = -200 # Floating loss limit after 1st payout
 
 MIN_SAFE_ATR = 1.5  
-MAX_LAYERS = 5  
+MAX_LAYERS = 3  
 SL_ATR_MULT = MAX_LAYERS * 2  
 
 if not mt5.initialize(path="C:/Program Files/MetaTrader 5 - FP_master/terminal64.exe") or not mt5.login(login=account_login, password=account_password, server=broker_server):
@@ -270,7 +270,7 @@ for i in range(1, len(df)):
         time_hm = time_hm_arr[i]
         
         # 🚨 TIME FILTERS
-        if time_hm >= 1130 and not (1700 <= time_hm <= 1800):
+        if time_hm >= 1130 and not (1700 <= time_hm <= 1800) and not (2000 <= time_hm <= 2330):
             if close > ema and rsi <= 31 and has_lower_wick:
                 active_trade = True
                 direction = "BUY"
@@ -300,7 +300,7 @@ for i in range(1, len(df)):
                 orders_open = 1
 
 print("="*160)
-print(f"📊 PROP FIRM SIMULATION SUMMARY (365 DAYS)")
+print(f"📊 PROP FIRM SIMULATION SUMMARY (V2 IMPROVED)")
 print("="*160)
 
 if account_blown:
