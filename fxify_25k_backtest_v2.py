@@ -10,14 +10,15 @@ import pytz
 # ==========================================
 # ⚙️ 1. SETTINGS & LOGIN
 # ==========================================
-symbol = "XAUUSD"
+symbol = "XAUUSD.r"
 timeframe = mt5.TIMEFRAME_M1
 MAGIC_NUMBER = 720887034 
-account_login = 12219217
-account_password = "1Mz$YuVGJ"
-broker_server = "FundingPips2-SIM"
+account_login = 8046098
+account_password = "a7V!H6v!6"
+broker_server = "FXIFY-Server"
 
 # 🚨 PROP FIRM RULES 🚨
+BACKTEST_DAYS = 1825      # number of days of history to simulate (5y = 1825, 2y = 730)
 STARTING_CAPITAL = 25000  
 PAYOUT_TARGET = 27500
 PAYOUT_AMOUNT = 250
@@ -33,20 +34,20 @@ INITIAL_MAX_FLOATING_LOSS     = -100
 POST_PAYOUT_MAX_RISK          = 300
 POST_PAYOUT_MAX_FLOATING_LOSS = -200 # Floating loss limit after 1st payout
 
-MIN_SAFE_ATR = 1.5  
-MAX_LAYERS = 3  
+MIN_SAFE_ATR = 1.75 # ⚖️ widen grid geometry: floor too low (1.5) made layers tighter than real vol -> shallow dips filled all 5 layers & hit kill switch. 1.75 validated vs 1.5/2.0/2.5 on 730d & 1825d.
+MAX_LAYERS = 5  
 SL_ATR_MULT = MAX_LAYERS * 2  
 
-if not mt5.initialize(path="C:/Program Files/MetaTrader 5 - FP_master/terminal64.exe") or not mt5.login(login=account_login, password=account_password, server=broker_server):
+if not mt5.initialize(path="C:/Program Files/MetaTrader 5 - backtesting/terminal64.exe") or not mt5.login(login=account_login, password=account_password, server=broker_server):
     print("❌ MT5 Connection Fail!")
     quit()
 
 # ==========================================
 # 📊 2. FETCH HISTORICAL DATA (365 DAYS)
 # ==========================================
-print("📥 Fetching 365 days of historical data...")
+print(f"📥 Fetching {BACKTEST_DAYS} days of historical data...")
 end_date = datetime.now(timezone.utc)
-start_date = end_date - timedelta(days=1825) 
+start_date = end_date - timedelta(days=BACKTEST_DAYS) 
 
 rates = mt5.copy_rates_range(symbol, timeframe, start_date, end_date)
 if rates is None or len(rates) == 0:
@@ -270,7 +271,7 @@ for i in range(1, len(df)):
         time_hm = time_hm_arr[i]
         
         # 🚨 TIME FILTERS
-        if time_hm >= 1130 and not (1700 <= time_hm <= 1800) and not (2000 <= time_hm <= 2330):
+        if time_hm >= 1130 and not (1700 <= time_hm <= 1800):
             if close > ema and rsi <= 31 and has_lower_wick:
                 active_trade = True
                 direction = "BUY"
@@ -300,7 +301,7 @@ for i in range(1, len(df)):
                 orders_open = 1
 
 print("="*160)
-print(f"📊 PROP FIRM SIMULATION SUMMARY (V2 IMPROVED)")
+print(f"📊 PROP FIRM SIMULATION SUMMARY ({BACKTEST_DAYS} DAYS)")
 print("="*160)
 
 if account_blown:
@@ -308,7 +309,7 @@ if account_blown:
     print(f"📉 Reason: {blown_reason}")
     print(f"🏦 Final Balance before blowing: ${running_capital:.2f}")
 else:
-    print(f"🏆 ACCOUNT SURVIVED 1 YEAR! 🏆")
+    print(f"🏆 ACCOUNT SURVIVED {BACKTEST_DAYS} DAYS! 🏆")
     print(f"🏦 Final Prop Balance: ${running_capital:.2f}")
 
 print("-" * 40)
